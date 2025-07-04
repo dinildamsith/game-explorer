@@ -1,33 +1,32 @@
 const API_KEY = "32588095bdd046128652573c649337e1"
 const BASE_URL = "https://api.rawg.io/api"
 
-interface FetchGamesParams {
+interface FetchOptions {
   page?: number
-  page_size?: number
   search?: string
   genres?: string
   platforms?: string
   ordering?: string
-  dates?: string
-  stores?: string
   tags?: string
+  stores?: string
+  page_size?: number
 }
 
-export async function fetchGames(params: FetchGamesParams = {}) {
-  const searchParams = new URLSearchParams({
+export async function fetchGames(options: FetchOptions = {}) {
+  const params = new URLSearchParams({
     key: API_KEY,
-    page: params.page?.toString() || "1",
-    page_size: params.page_size?.toString() || "20",
-    ...(params.search && { search: params.search }),
-    ...(params.genres && { genres: params.genres }),
-    ...(params.platforms && { platforms: params.platforms }),
-    ...(params.ordering && { ordering: params.ordering }),
-    ...(params.dates && { dates: params.dates }),
-    ...(params.stores && { stores: params.stores }),
-    ...(params.tags && { tags: params.tags }),
+    page: options.page?.toString() || "1",
+    page_size: options.page_size?.toString() || "20",
   })
 
-  const response = await fetch(`${BASE_URL}/games?${searchParams}`)
+  if (options.search) params.append("search", options.search)
+  if (options.genres) params.append("genres", options.genres)
+  if (options.platforms) params.append("platforms", options.platforms)
+  if (options.ordering) params.append("ordering", options.ordering)
+  if (options.tags) params.append("tags", options.tags)
+  if (options.stores) params.append("stores", options.stores)
+
+  const response = await fetch(`${BASE_URL}/games?${params}`)
   if (!response.ok) {
     throw new Error("Failed to fetch games")
   }
@@ -42,14 +41,10 @@ export async function fetchGameDetails(id: number) {
   return response.json()
 }
 
-export async function fetchGame(id: number) {
-  return fetchGameDetails(id)
-}
-
 export async function fetchGameScreenshots(id: number) {
   const response = await fetch(`${BASE_URL}/games/${id}/screenshots?key=${API_KEY}`)
   if (!response.ok) {
-    throw new Error("Failed to fetch screenshots")
+    throw new Error("Failed to fetch game screenshots")
   }
   return response.json()
 }
@@ -57,7 +52,7 @@ export async function fetchGameScreenshots(id: number) {
 export async function fetchGameTrailers(id: number) {
   const response = await fetch(`${BASE_URL}/games/${id}/movies?key=${API_KEY}`)
   if (!response.ok) {
-    throw new Error("Failed to fetch trailers")
+    throw new Error("Failed to fetch game trailers")
   }
   return response.json()
 }
@@ -65,7 +60,7 @@ export async function fetchGameTrailers(id: number) {
 export async function fetchGameAchievements(id: number) {
   const response = await fetch(`${BASE_URL}/games/${id}/achievements?key=${API_KEY}`)
   if (!response.ok) {
-    throw new Error("Failed to fetch achievements")
+    throw new Error("Failed to fetch game achievements")
   }
   return response.json()
 }
@@ -79,33 +74,45 @@ export async function fetchGameStores(id: number) {
 }
 
 export async function fetchGameSuggestions(id: number) {
-  const response = await fetch(`${BASE_URL}/games/${id}/suggested?key=${API_KEY}`)
+  try {
+    const game = await fetchGameDetails(id)
+    const genres = game.genres
+      ?.map((g: any) => g.slug)
+      .slice(0, 2)
+      .join(",")
+
+    if (genres) {
+      return await fetchGames({
+        genres,
+        ordering: "-rating",
+        page_size: 12,
+      })
+    } else {
+      return await fetchGames({
+        ordering: "-rating",
+        page_size: 12,
+      })
+    }
+  } catch (error) {
+    return await fetchGames({
+      ordering: "-added",
+      page_size: 12,
+    })
+  }
+}
+
+export async function fetchCreators() {
+  const response = await fetch(`${BASE_URL}/creators?key=${API_KEY}&page_size=20`)
   if (!response.ok) {
-    throw new Error("Failed to fetch suggestions")
+    throw new Error("Failed to fetch creators")
   }
   return response.json()
 }
 
-export async function fetchGameSeries(id: number) {
-  const response = await fetch(`${BASE_URL}/games/${id}/game-series?key=${API_KEY}`)
+export async function fetchStores() {
+  const response = await fetch(`${BASE_URL}/stores?key=${API_KEY}&page_size=20`)
   if (!response.ok) {
-    throw new Error("Failed to fetch game series")
-  }
-  return response.json()
-}
-
-export async function fetchGameAdditions(id: number) {
-  const response = await fetch(`${BASE_URL}/games/${id}/additions?key=${API_KEY}`)
-  if (!response.ok) {
-    throw new Error("Failed to fetch game additions")
-  }
-  return response.json()
-}
-
-export async function fetchGameReviews(id: number) {
-  const response = await fetch(`${BASE_URL}/games/${id}/reviews?key=${API_KEY}`)
-  if (!response.ok) {
-    throw new Error("Failed to fetch game reviews")
+    throw new Error("Failed to fetch stores")
   }
   return response.json()
 }
@@ -126,34 +133,10 @@ export async function fetchPlatforms() {
   return response.json()
 }
 
-export async function fetchStores() {
-  const response = await fetch(`${BASE_URL}/stores?key=${API_KEY}`)
-  if (!response.ok) {
-    throw new Error("Failed to fetch stores")
-  }
-  return response.json()
-}
-
 export async function fetchTags() {
   const response = await fetch(`${BASE_URL}/tags?key=${API_KEY}`)
   if (!response.ok) {
     throw new Error("Failed to fetch tags")
-  }
-  return response.json()
-}
-
-export async function fetchCreators() {
-  const response = await fetch(`${BASE_URL}/creators?key=${API_KEY}`)
-  if (!response.ok) {
-    throw new Error("Failed to fetch creators")
-  }
-  return response.json()
-}
-
-export async function fetchCreatorDetails(id: number) {
-  const response = await fetch(`${BASE_URL}/creators/${id}?key=${API_KEY}`)
-  if (!response.ok) {
-    throw new Error("Failed to fetch creator details")
   }
   return response.json()
 }
