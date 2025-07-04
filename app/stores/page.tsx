@@ -60,10 +60,10 @@ export default function StoresPage() {
             <Link href="/">
               <Button
                 variant="outline"
-                className="gap-2 hover:bg-purple-50 hover:text-purple-600 transition-all duration-200 bg-transparent"
+                className="gap-2 bg-white border-gray-300 text-gray-700 hover:bg-purple-50 hover:text-purple-600 hover:border-purple-300 transition-all duration-200 font-medium"
               >
                 <Gamepad2 className="w-4 h-4" />
-                Back to Games
+                <span className="text-sm font-medium">Back to Games</span>
               </Button>
             </Link>
           </div>
@@ -79,7 +79,7 @@ export default function StoresPage() {
               placeholder="Search stores..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 border-gray-300 focus:border-green-500 focus:ring-green-500 transition-all duration-200"
+              className="pl-10 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-green-500 focus:ring-green-500 transition-all duration-200"
             />
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function StoresPage() {
           <div className="flex items-center justify-center py-12">
             <div className="text-center animate-pulse">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-              <span className="text-gray-600">Loading stores...</span>
+              <span className="text-gray-600 font-medium">Loading stores...</span>
             </div>
           </div>
         ) : (
@@ -105,21 +105,39 @@ export default function StoresPage() {
                     alt={store.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.src = "/placeholder.svg?height=200&width=300"
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
                 <CardHeader className="pb-2">
                   <div className="flex items-center gap-3">
-                    <img
-                      src={store.image || "/placeholder.svg?height=40&width=40"}
-                      alt={store.name}
-                      className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
-                    />
+                    <div className="w-10 h-10 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center overflow-hidden">
+                      {store.image ? (
+                        <img
+                          src={store.image || "/placeholder.svg"}
+                          alt={store.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement
+                            target.style.display = "none"
+                            const parent = target.parentElement
+                            if (parent) {
+                              parent.innerHTML = `<Store class="w-5 h-5 text-gray-400" />`
+                            }
+                          }}
+                        />
+                      ) : (
+                        <Store className="w-5 h-5 text-gray-400" />
+                      )}
+                    </div>
                     <div className="flex-1">
-                      <CardTitle className="text-lg text-gray-900 group-hover:text-green-600 transition-colors duration-200">
+                      <CardTitle className="text-lg text-gray-900 group-hover:text-green-600 transition-colors duration-200 font-bold">
                         {store.name}
                       </CardTitle>
-                      <p className="text-sm text-gray-500">{store.games_count} games available</p>
+                      <p className="text-sm text-gray-500 font-medium">{store.games_count} games available</p>
                     </div>
                   </div>
                 </CardHeader>
@@ -127,7 +145,7 @@ export default function StoresPage() {
                   <div className="flex items-center justify-between">
                     <Badge
                       variant="secondary"
-                      className="bg-green-100 text-green-700 hover:bg-green-200 transition-colors duration-200"
+                      className="bg-green-100 text-green-700 hover:bg-green-200 transition-colors duration-200 font-medium"
                     >
                       ID: {store.id}
                     </Badge>
@@ -136,10 +154,10 @@ export default function StoresPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="gap-1 hover:bg-green-50 hover:text-green-600 hover:border-green-300 transition-all duration-200 bg-transparent"
+                          className="gap-1 bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:text-green-600 hover:border-green-300 transition-all duration-200 font-medium"
                         >
                           <ExternalLink className="w-3 h-3" />
-                          Visit
+                          <span className="text-xs font-medium">Visit</span>
                         </Button>
                       </Link>
                     )}

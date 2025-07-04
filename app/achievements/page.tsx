@@ -65,10 +65,10 @@ export default function AchievementsPage() {
             <Link href="/">
               <Button
                 variant="outline"
-                className="gap-2 hover:bg-purple-50 hover:text-purple-600 transition-all duration-200 bg-transparent"
+                className="gap-2 bg-white border-gray-300 text-gray-700 hover:bg-purple-50 hover:text-purple-600 hover:border-purple-300 transition-all duration-200 font-medium"
               >
                 <Gamepad2 className="w-4 h-4" />
-                Back to Games
+                <span className="text-sm font-medium">Back to Games</span>
               </Button>
             </Link>
           </div>
@@ -84,7 +84,7 @@ export default function AchievementsPage() {
               placeholder="Search games with achievements..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 border-gray-300 focus:border-yellow-500 focus:ring-yellow-500 transition-all duration-200"
+              className="pl-10 bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-yellow-500 focus:ring-yellow-500 transition-all duration-200"
             />
           </div>
         </div>
@@ -93,7 +93,7 @@ export default function AchievementsPage() {
           <div className="flex items-center justify-center py-12">
             <div className="text-center animate-pulse">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-600 mx-auto mb-4"></div>
-              <span className="text-gray-600">Loading achievements...</span>
+              <span className="text-gray-600 font-medium">Loading achievements...</span>
             </div>
           </div>
         ) : (
@@ -109,12 +109,16 @@ export default function AchievementsPage() {
                       src={game.background_image || "/placeholder.svg?height=200&width=300"}
                       alt={game.name}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.src = "/placeholder.svg?height=200&width=300"
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <div className="absolute top-2 right-2">
-                      <Badge className="bg-yellow-500 text-white border-0 shadow-lg">
+                      <Badge className="bg-yellow-500 text-white border-0 shadow-lg font-medium">
                         <Trophy className="w-3 h-3 mr-1" />
-                        Achievements
+                        <span className="text-xs font-medium">Achievements</span>
                       </Badge>
                     </div>
                     <div className="absolute bottom-2 left-2 right-2">
@@ -129,7 +133,7 @@ export default function AchievementsPage() {
                         <Star className="w-4 h-4 text-yellow-500 fill-current" />
                         <span className="text-sm font-medium text-gray-700">{game.rating}</span>
                       </div>
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary" className="text-xs font-medium bg-gray-100 text-gray-700">
                         {game.released}
                       </Badge>
                     </div>
@@ -138,13 +142,13 @@ export default function AchievementsPage() {
                         <Badge
                           key={genre.id}
                           variant="outline"
-                          className="text-xs border-yellow-300 text-yellow-700 hover:bg-yellow-50"
+                          className="text-xs border-yellow-300 text-yellow-700 hover:bg-yellow-50 font-medium"
                         >
                           {genre.name}
                         </Badge>
                       ))}
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
                       <span>{game.reviews_count} reviews</span>
                       {game.playtime && <span>• {game.playtime}h playtime</span>}
                     </div>
@@ -160,7 +164,7 @@ export default function AchievementsPage() {
             <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
               <Trophy className="w-16 h-16 mx-auto text-gray-400 mb-4" />
               <h3 className="text-xl font-semibold mb-2 text-gray-900">No games found</h3>
-              <p className="text-gray-600">Try adjusting your search query</p>
+              <p className="text-gray-600 font-medium">Try adjusting your search query</p>
             </div>
           </div>
         )}

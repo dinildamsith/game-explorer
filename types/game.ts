@@ -1,45 +1,78 @@
 export interface Game {
   id: number
   name: string
+  slug: string
   released: string
+  tba: boolean
   background_image: string
   rating: number
   rating_top: number
+  ratings: Rating[]
   ratings_count: number
+  reviews_text_count: number
   reviews_count: number
+  added: number
+  added_by_status: AddedByStatus
   metacritic: number
   playtime: number
-  genres: Genre[]
+  suggestions_count: number
+  updated: string
+  user_game: any
   platforms: PlatformInfo[]
+  parent_platforms: ParentPlatform[]
+  genres: Genre[]
   stores: StoreInfo[]
-  developers: Developer[]
-  publishers: Publisher[]
-  esrb_rating: ESRBRating
-  description_raw: string
-  website: string
-  reddit_url: string
-  metacritic_url: string
+  clip: any
   tags: Tag[]
+  esrb_rating: EsrbRating
+  short_screenshots: ShortScreenshot[]
+  description?: string
+  description_raw?: string
+  website?: string
+  reddit_url?: string
+  reddit_name?: string
+  reddit_description?: string
+  reddit_logo?: string
+  reddit_count?: number
+  twitch_count?: number
+  youtube_count?: number
+  reviews_text_count_positive?: number
+  reviews_text_count_negative?: number
+  saturated_color?: string
+  dominant_color?: string
+  developers?: Developer[]
+  publishers?: Publisher[]
 }
 
-export interface Genre {
+export interface Rating {
   id: number
-  name: string
-  slug: string
+  title: string
+  count: number
+  percent: number
+}
+
+export interface AddedByStatus {
+  yet: number
+  owned: number
+  beaten: number
+  toplay: number
+  dropped: number
+  playing: number
 }
 
 export interface PlatformInfo {
   platform: Platform
   released_at: string
-  requirements: Requirements
+  requirements_en: Requirements
+  requirements_ru: Requirements
 }
 
 export interface Platform {
   id: number
   name: string
   slug: string
-  image: string
-  year_end: number
+  image: any
+  year_end: any
   year_start: number
   games_count: number
   image_background: string
@@ -50,10 +83,25 @@ export interface Requirements {
   recommended: string
 }
 
+export interface ParentPlatform {
+  platform: {
+    id: number
+    name: string
+    slug: string
+  }
+}
+
+export interface Genre {
+  id: number
+  name: string
+  slug: string
+  games_count: number
+  image_background: string
+}
+
 export interface StoreInfo {
   id: number
   store: Store
-  url: string
 }
 
 export interface Store {
@@ -63,6 +111,25 @@ export interface Store {
   domain: string
   games_count: number
   image_background: string
+}
+
+export interface Tag {
+  id: number
+  name: string
+  slug: string
+  language: string
+  games_count: number
+  image_background: string
+}
+
+export interface EsrbRating {
+  id: number
+  name: string
+  slug: string
+}
+
+export interface ShortScreenshot {
+  id: number
   image: string
 }
 
@@ -82,41 +149,15 @@ export interface Publisher {
   image_background: string
 }
 
-export interface ESRBRating {
-  id: number
-  name: string
-  slug: string
-}
-
-export interface Tag {
-  id: number
-  name: string
-  slug: string
-  language: string
-  games_count: number
-  image_background: string
-}
-
-export interface GamesResponse {
-  count: number
-  next: string | null
-  previous: string | null
-  results: Game[]
-}
-
 export interface Screenshot {
   id: number
   image: string
   width: number
   height: number
+  is_deleted: boolean
 }
 
-export interface ScreenshotsResponse {
-  count: number
-  results: Screenshot[]
-}
-
-export interface GameTrailer {
+export interface Trailer {
   id: number
   name: string
   preview: string
@@ -126,33 +167,30 @@ export interface GameTrailer {
   }
 }
 
-export interface TrailersResponse {
-  count: number
-  results: GameTrailer[]
-}
-
-export interface GameAchievement {
+export interface Achievement {
   id: number
   name: string
   description: string
   image: string
-  percent: number
-}
-
-export interface AchievementsResponse {
-  count: number
-  results: GameAchievement[]
+  percent: string
 }
 
 export interface GameStore {
   id: number
-  store: Store
+  game_id: number
+  store_id: number
   url: string
+  store?: Store
 }
 
-export interface GameStoresResponse {
-  count: number
-  results: GameStore[]
+export interface StoreData {
+  id: number
+  name: string
+  slug: string
+  domain: string
+  games_count: number
+  image_background: string
+  image?: string
 }
 
 export interface Creator {
@@ -163,6 +201,7 @@ export interface Creator {
   image_background: string
   games_count: number
   positions: Position[]
+  games: CreatorGame[]
 }
 
 export interface Position {
@@ -171,22 +210,72 @@ export interface Position {
   slug: string
 }
 
-export interface CreatorsResponse {
-  count: number
-  results: Creator[]
+export interface CreatorGame {
+  id: number
+  slug: string
+  name: string
+  added: number
 }
 
-export interface StoreData {
-  id: number
-  name: string
-  slug: string
-  domain: string
-  games_count: number
-  image_background: string
-  image: string
+export interface GamesResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Game[]
+}
+
+export interface ScreenshotsResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Screenshot[]
+}
+
+export interface TrailersResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Trailer[]
+}
+
+export interface AchievementsResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Achievement[]
+}
+
+export interface GameStoresResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: GameStore[]
 }
 
 export interface StoresResponse {
   count: number
+  next: string | null
+  previous: string | null
   results: StoreData[]
+}
+
+export interface CreatorsResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Creator[]
+}
+
+export interface GenresResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Genre[]
+}
+
+export interface PlatformsResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Platform[]
 }
