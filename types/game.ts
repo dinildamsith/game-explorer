@@ -1,36 +1,88 @@
 export interface Game {
   id: number
   name: string
-  slug: string
-  background_image: string
   released: string
+  background_image: string
   rating: number
   rating_top: number
   ratings_count: number
-  metacritic: number | null
+  reviews_count: number
+  metacritic: number
   playtime: number
-  platforms: Platform[]
   genres: Genre[]
+  platforms: PlatformInfo[]
+  stores: StoreInfo[]
+  developers: Developer[]
+  publishers: Publisher[]
+  esrb_rating: ESRBRating
+  description_raw: string
+  website: string
+  reddit_url: string
+  metacritic_url: string
   tags: Tag[]
-  esrb_rating: EsrbRating | null
-  short_screenshots: Screenshot[]
-  description_raw?: string
-  website?: string
-  reddit_url?: string
-  metacritic_url?: string
-  developers?: Developer[]
-  publishers?: Publisher[]
-}
-
-export interface Platform {
-  platform: {
-    id: number
-    name: string
-    slug: string
-  }
 }
 
 export interface Genre {
+  id: number
+  name: string
+  slug: string
+}
+
+export interface PlatformInfo {
+  platform: Platform
+  released_at: string
+  requirements: Requirements
+}
+
+export interface Platform {
+  id: number
+  name: string
+  slug: string
+  image: string
+  year_end: number
+  year_start: number
+  games_count: number
+  image_background: string
+}
+
+export interface Requirements {
+  minimum: string
+  recommended: string
+}
+
+export interface StoreInfo {
+  id: number
+  store: Store
+  url: string
+}
+
+export interface Store {
+  id: number
+  name: string
+  slug: string
+  domain: string
+  games_count: number
+  image_background: string
+  image: string
+}
+
+export interface Developer {
+  id: number
+  name: string
+  slug: string
+  games_count: number
+  image_background: string
+}
+
+export interface Publisher {
+  id: number
+  name: string
+  slug: string
+  games_count: number
+  image_background: string
+}
+
+export interface ESRBRating {
   id: number
   name: string
   slug: string
@@ -40,29 +92,9 @@ export interface Tag {
   id: number
   name: string
   slug: string
-}
-
-export interface EsrbRating {
-  id: number
-  name: string
-  slug: string
-}
-
-export interface Screenshot {
-  id: number
-  image: string
-}
-
-export interface Developer {
-  id: number
-  name: string
-  slug: string
-}
-
-export interface Publisher {
-  id: number
-  name: string
-  slug: string
+  language: string
+  games_count: number
+  image_background: string
 }
 
 export interface GamesResponse {
@@ -70,6 +102,18 @@ export interface GamesResponse {
   next: string | null
   previous: string | null
   results: Game[]
+}
+
+export interface Screenshot {
+  id: number
+  image: string
+  width: number
+  height: number
+}
+
+export interface ScreenshotsResponse {
+  count: number
+  results: Screenshot[]
 }
 
 export interface GameTrailer {
@@ -82,24 +126,9 @@ export interface GameTrailer {
   }
 }
 
-export interface GameScreenshot {
-  id: number
-  image: string
-  width: number
-  height: number
-}
-
-export interface GameStore {
-  id: number
-  store: {
-    id: number
-    name: string
-    slug: string
-    domain: string
-    games_count: number
-    image_background: string
-  }
-  url: string
+export interface TrailersResponse {
+  count: number
+  results: GameTrailer[]
 }
 
 export interface GameAchievement {
@@ -107,15 +136,23 @@ export interface GameAchievement {
   name: string
   description: string
   image: string
-  percent: string
+  percent: number
 }
 
-export interface GameReview {
+export interface AchievementsResponse {
+  count: number
+  results: GameAchievement[]
+}
+
+export interface GameStore {
   id: number
-  username: string
-  rating: number
-  text: string
-  created: string
+  store: Store
+  url: string
+}
+
+export interface GameStoresResponse {
+  count: number
+  results: GameStore[]
 }
 
 export interface Creator {
@@ -134,50 +171,22 @@ export interface Position {
   slug: string
 }
 
-export interface GameSeries {
-  id: number
-  name: string
-  slug: string
-  games_count: number
-  image_background: string
+export interface CreatorsResponse {
+  count: number
+  results: Creator[]
 }
 
-export interface GameAddition {
-  id: number
-  name: string
-  slug: string
-  released: string
-  background_image: string
-  rating: number
-}
-
-export interface Store {
+export interface StoreData {
   id: number
   name: string
   slug: string
   domain: string
   games_count: number
   image_background: string
+  image: string
 }
 
-export interface GameDetails extends Game {
-  description_raw: string
-  website: string
-  reddit_url: string
-  metacritic_url: string
-  developers: Developer[]
-  publishers: Publisher[]
-  parent_platforms: Platform[]
-  stores: GameStore[]
-  clip?: GameTrailer
-  tags: Tag[]
-  user_game?: any
-  reviews_count: number
-  suggestions_count: number
-  alternative_names: string[]
-  parents_count: number
-  additions_count: number
-  game_series_count: number
-  tba: boolean
-  dominant_color: string
+export interface StoresResponse {
+  count: number
+  results: StoreData[]
 }

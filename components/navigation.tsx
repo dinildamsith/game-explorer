@@ -23,9 +23,17 @@ export function Navigation() {
 
         return (
           <Link key={item.href} href={item.href}>
-            <Button variant={isActive ? "default" : "ghost"} size="sm" className="gap-2">
+            <Button
+              variant={isActive ? "default" : "ghost"}
+              size="sm"
+              className={`gap-2 transition-all duration-200 hover:scale-105 ${
+                isActive
+                  ? "bg-purple-600 hover:bg-purple-700 text-white shadow-md"
+                  : "text-gray-600 hover:text-purple-600 hover:bg-purple-50"
+              }`}
+            >
               <Icon className="w-4 h-4" />
-              {item.label}
+              <span className="hidden sm:inline">{item.label}</span>
             </Button>
           </Link>
         )
