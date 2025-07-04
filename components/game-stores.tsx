@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, ShoppingCart, Loader2 } from "lucide-react"
+import { Store, ExternalLink } from "lucide-react"
 import { fetchGameStores } from "@/lib/api"
 import type { GameStore } from "@/types/game"
 
@@ -21,16 +21,11 @@ export function GameStores({ gameId }: GameStoresProps) {
     const loadStores = async () => {
       try {
         setLoading(true)
-        setError(null)
         const data = await fetchGameStores(gameId)
-        // Filter out stores with invalid data structure
-        const validStores = (data.results || []).filter(
-          (gameStore: any) => gameStore && gameStore.store && gameStore.store.name,
-        )
-        setStores(validStores)
+        setStores(data.results || [])
       } catch (err) {
-        console.error("Failed to load stores:", err)
-        setError("Failed to load store information")
+        setError("Failed to load stores")
+        console.error("Error loading stores:", err)
       } finally {
         setLoading(false)
       }
@@ -43,71 +38,86 @@ export function GameStores({ gameId }: GameStoresProps) {
     return (
       <Card className="bg-white/95 backdrop-blur-sm border border-gray-200 shadow-sm">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-gray-900">
-            <ShoppingCart className="w-5 h-5 text-purple-600" />
-            Where to Buy
-          </CardTitle>
+          <CardTitle className="text-gray-900">Where to Buy</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center py-8">
-            <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
           </div>
         </CardContent>
       </Card>
     )
   }
 
-  if (error) {
+  if (error || !stores.length) {
     return (
       <Card className="bg-white/95 backdrop-blur-sm border border-gray-200 shadow-sm">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-gray-900">
-            <ShoppingCart className="w-5 h-5 text-purple-600" />
-            Where to Buy
-          </CardTitle>
+          <CardTitle className="text-gray-900">Where to Buy</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-gray-600 text-center py-4">{error}</p>
+          <div className="text-center py-8">
+            <Store className="w-12 h-12 mx-auto text-gray-400 mb-2" />
+            <p className="text-gray-600">No stores available</p>
+          </div>
         </CardContent>
       </Card>
     )
   }
 
-  if (stores.length === 0) {
-    return null
-  }
-
   return (
     <Card className="bg-white/95 backdrop-blur-sm border border-gray-200 shadow-sm">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-gray-900">
-          <ShoppingCart className="w-5 h-5 text-purple-600" />
-          Where to Buy
-        </CardTitle>
+        <CardTitle className="text-gray-900">Where to Buy</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        {stores.map((gameStore) => (
-          <Link key={gameStore.id} href={gameStore.url || "#"} target="_blank" rel="noopener noreferrer">
-            <Button
-              variant="outline"
-              className="w-full justify-between bg-white/80 border-gray-300 text-gray-700 hover:bg-gray-50"
-            >
-              <div className="flex items-center gap-3">
-                <img
-                  src={gameStore.store?.image_background || "/placeholder.svg?height=24&width=24"}
-                  alt={gameStore.store?.name || "Store"}
-                  className="w-6 h-6 rounded object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.src = "/placeholder.svg?height=24&width=24"
-                  }}
-                />
-                <span>{gameStore.store?.name || "Unknown Store"}</span>
-              </div>
-              <ExternalLink className="w-4 h-4" />
-            </Button>
-          </Link>
-        ))}
+      <CardContent>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {stores.map((gameStore) => {
+            const store = gameStore.store
+            if (!store) return null
+
+            return (
+              <Link key={gameStore.id} href={gameStore.url} target="_blank" rel="noopener noreferrer">
+                <div className="group p-4 rounded-lg border border-gray-200 hover:border-green-300 hover:shadow-md transition-all duration-200 bg-white">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                      {store.image_background ? (
+                        <img
+                          src={store.image_background || "/placeholder.svg"}
+                          alt={store.name}
+                          className="w-6 h-6 rounded object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement
+                            target.style.display = "none"
+                            const parent = target.parentElement
+                            if (parent) {
+                              const icon = document.createElement("div")
+                              icon.innerHTML =
+                                '<svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 2L3 7v11a1 1 0 001 1h3v-8h6v8h3a1 1 0 001-1V7l-7-5z" clipRule="evenodd"></path></svg>'
+                              parent.appendChild(icon)
+                            }
+                          }}
+                        />
+                      ) : (
+                        <Store className="w-5 h-5 text-green-600" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 group-hover:text-green-600 transition-colors duration-200">
+                        {store.name}
+                      </h4>
+                      <p className="text-xs text-gray-500">{store.domain}</p>
+                    </div>
+                  </div>
+                  <Button size="sm" className="w-full gap-2 bg-green-600 hover:bg-green-700 text-white border-0">
+                    <ExternalLink className="w-4 h-4" />
+                    <span className="font-medium">Visit Store</span>
+                  </Button>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
       </CardContent>
     </Card>
   )

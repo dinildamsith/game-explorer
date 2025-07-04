@@ -34,12 +34,16 @@ export async function fetchGames(params: FetchGamesParams = {}) {
   return response.json()
 }
 
-export async function fetchGame(id: number) {
+export async function fetchGameDetails(id: number) {
   const response = await fetch(`${BASE_URL}/games/${id}?key=${API_KEY}`)
   if (!response.ok) {
-    throw new Error("Failed to fetch game")
+    throw new Error("Failed to fetch game details")
   }
   return response.json()
+}
+
+export async function fetchGame(id: number) {
+  return fetchGameDetails(id)
 }
 
 export async function fetchGameScreenshots(id: number) {
@@ -82,6 +86,30 @@ export async function fetchGameSuggestions(id: number) {
   return response.json()
 }
 
+export async function fetchGameSeries(id: number) {
+  const response = await fetch(`${BASE_URL}/games/${id}/game-series?key=${API_KEY}`)
+  if (!response.ok) {
+    throw new Error("Failed to fetch game series")
+  }
+  return response.json()
+}
+
+export async function fetchGameAdditions(id: number) {
+  const response = await fetch(`${BASE_URL}/games/${id}/additions?key=${API_KEY}`)
+  if (!response.ok) {
+    throw new Error("Failed to fetch game additions")
+  }
+  return response.json()
+}
+
+export async function fetchGameReviews(id: number) {
+  const response = await fetch(`${BASE_URL}/games/${id}/reviews?key=${API_KEY}`)
+  if (!response.ok) {
+    throw new Error("Failed to fetch game reviews")
+  }
+  return response.json()
+}
+
 export async function fetchGenres() {
   const response = await fetch(`${BASE_URL}/genres?key=${API_KEY}`)
   if (!response.ok) {
@@ -118,6 +146,14 @@ export async function fetchCreators() {
   const response = await fetch(`${BASE_URL}/creators?key=${API_KEY}`)
   if (!response.ok) {
     throw new Error("Failed to fetch creators")
+  }
+  return response.json()
+}
+
+export async function fetchCreatorDetails(id: number) {
+  const response = await fetch(`${BASE_URL}/creators/${id}?key=${API_KEY}`)
+  if (!response.ok) {
+    throw new Error("Failed to fetch creator details")
   }
   return response.json()
 }
