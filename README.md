@@ -103,7 +103,10 @@ Each function handles error checking and data parsing to ensure smooth UX.
 
 ## 📸 Screenshots
 
-> *Add screenshots here showing homepage, filters, game detail modal, etc.*
+![Screenshot 2025-07-05 190158](https://github.com/user-attachments/assets/8a5a0afd-aee5-4867-adfa-2bedef9cea55)
+![Screenshot 2025-07-05 190020](https://github.com/user-attachments/assets/ea318255-a2b5-46c4-80e9-675307b29070)
+![Screenshot 2025-07-05 190056](https://github.com/user-attachments/assets/91914509-5016-4e44-81bf-38edbf4ba958)
+![Screenshot 2025-07-05 190119](https://github.com/user-attachments/assets/e5253f4f-1fc4-4d90-9b3a-a6e9c3fa4fdd)
 
 ---
 
