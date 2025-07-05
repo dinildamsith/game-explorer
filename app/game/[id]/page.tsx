@@ -280,39 +280,40 @@ export default function GameDetailsPage() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {trailers.map((trailer, index) => (
-                      <div>
-                        <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden border border-gray-300 shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
-                          <img
-                            src={
-                              trailer.preview ||
-                              trailer.image ||
-                              game.background_image ||
-                              "/placeholder.svg?height=180&width=320"
-                            }
-                            alt={`${game.name} trailer ${index + 1}`}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement
-                              target.src = "/placeholder.svg?height=180&width=320"
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300"></div>
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="bg-white/90 backdrop-blur-sm rounded-full p-3 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-lg">
-                              <Play className="w-6 h-6 fill-current" />
+                        <div key={trailer.id || index} className="group">
+                          <div className="relative aspect-video bg-gray-900 rounded-lg overflow-hidden border border-gray-700 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                            <video
+                                controls
+                                poster={trailer.preview || game.background_image || "/placeholder.svg?height=180&width=320"}
+                                className="w-full h-full object-cover"
+                                preload="none"
+                            >
+                              <source src={trailer.data?.max} type="video/mp4" />
+                              Your browser does not support the video tag.
+                            </video>
+
+                            {/* Play Overlay (Optional - for custom play button before video starts) */}
+                            {/* You could add a state to control whether the video is playing and show/hide this overlay */}
+                            {/*
+      <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/60 transition-colors duration-300 cursor-pointer">
+        <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-lg">
+          <Play className="w-8 h-8 fill-current" />
+        </div>
+      </div>
+      */}
+
+                            <div className="absolute top-2 right-2">
+                              <Badge className="bg-black/70 text-white border-0 text-xs font-medium">HD</Badge>
                             </div>
                           </div>
-                          <div className="absolute top-2 right-2">
-                            <Badge className="bg-black/70 text-white border-0 text-xs">HD</Badge>
+                          <div className="mt-3">
+                            <h4 className="font-semibold text-gray-900 text-base truncate">
+                              {trailer.name || `${game.name} Trailer ${index + 1}`}
+                            </h4>
+                            {/* Optional: Display video resolution if available */}
+                            {/* {trailer.data?.max && <p className="text-xs text-gray-600">Resolution: {trailer.data.max.split('/').pop().split('.')[0]}</p>} */}
                           </div>
                         </div>
-                        <div className="mt-2">
-                          <h4 className="font-medium text-gray-900 text-sm truncate">
-                            {trailer.name || `${game.name} Trailer ${index + 1}`}
-                          </h4>
-                          {/*<p className="text-xs text-gray-600">{trailer.data?.max || "Video"}</p>*/}
-                        </div>
-                      </div>
                     ))}
                   </div>
                 </CardContent>
