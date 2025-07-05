@@ -88,7 +88,7 @@ export function SearchFilters({
             placeholder="Search for games..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 border-gray-300 focus:border-purple-500 focus:ring-purple-500 bg-white"
+            className="pl-10 border-gray-300 text-black focus:border-purple-500 focus:ring-purple-500 bg-white"
           />
         </div>
         <Button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white px-6">
@@ -112,7 +112,7 @@ export function SearchFilters({
               <SelectItem
                 key={genre.id}
                 value={genre.id.toString()}
-                className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100"
+                className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black"
               >
                 {genre.name}
               </SelectItem>
@@ -135,7 +135,7 @@ export function SearchFilters({
               <SelectItem
                 key={platform.id}
                 value={platform.id.toString()}
-                className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100"
+                className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black"
               >
                 {platform.name}
               </SelectItem>
@@ -154,22 +154,22 @@ export function SearchFilters({
             <SelectValue placeholder="Sort by" className="text-gray-700" />
           </SelectTrigger>
           <SelectContent className="bg-white border-gray-200 shadow-lg">
-            <SelectItem value="-rating" className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100">
+            <SelectItem value="-rating" className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black">
               ⭐ Highest Rated
             </SelectItem>
-            <SelectItem value="-released" className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100">
+            <SelectItem value="-released" className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black">
               🆕 Newest
             </SelectItem>
-            <SelectItem value="released" className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100">
+            <SelectItem value="released" className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black">
               📅 Oldest
             </SelectItem>
-            <SelectItem value="-metacritic" className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100">
+            <SelectItem value="-metacritic" className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black">
               🏆 Metacritic Score
             </SelectItem>
-            <SelectItem value="name" className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100">
+            <SelectItem value="name" className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black">
               🔤 Name A-Z
             </SelectItem>
-            <SelectItem value="-name" className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100">
+            <SelectItem value="-name" className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black">
               🔤 Name Z-A
             </SelectItem>
           </SelectContent>
@@ -190,7 +190,7 @@ export function SearchFilters({
               <SelectItem
                 key={tag.id}
                 value={tag.id.toString()}
-                className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100"
+                className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black"
               >
                 {tag.name}
               </SelectItem>
@@ -213,7 +213,7 @@ export function SearchFilters({
               <SelectItem
                 key={store.id}
                 value={store.id.toString()}
-                className="text-gray-900 hover:bg-gray-100 focus:bg-gray-100"
+                className="text-gray-900 hover:bg-gray-100 hover:text-black focus:bg-gray-100 focus:text-black"
               >
                 {store.name}
               </SelectItem>
@@ -224,7 +224,7 @@ export function SearchFilters({
         <Button
           variant="outline"
           onClick={handleClearFilters}
-          className="flex items-center gap-2 border-gray-300 hover:bg-gray-50 text-gray-700 bg-transparent"
+          className="flex items-center gap-2 border-gray-300 text-gray-900 hover:bg-gray-50 hover:text-black bg-transparent focus:text-black"
         >
           <X className="w-4 h-4" />
           Clear All
