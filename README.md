@@ -1,7 +1,3 @@
-Here's a professional and informative `README.md` file for your **Game Explorer App** using the RAWG API and Next.js:
-
----
-
 # 🎮 Game Explorer
 
 A modern game discovery application built with **Next.js**, **TypeScript**, and **Tailwind CSS**, powered by the [RAWG Video Games Database API](https://rawg.io/apidocs). Explore trending games, detailed game information, screenshots, trailers, achievements, and more.
