@@ -1,4 +1,4 @@
-const API_KEY = "32588095bdd046128652573c649337e1"
+const API_KEY:any = process.env.NEXT_PUBLIC_RAWG_API_KEY
 const BASE_URL = "https://api.rawg.io/api"
 
 interface FetchOptions {
