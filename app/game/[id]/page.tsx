@@ -314,7 +314,7 @@ export default function GameDetailsPage() {
                           <h4 className="font-medium text-gray-900 text-sm truncate">
                             {trailer.name || `${game.name} Trailer ${index + 1}`}
                           </h4>
-                          <p className="text-xs text-gray-600">{trailer.data?.max || "Video"}</p>
+                          {/*<p className="text-xs text-gray-600">{trailer.data?.max || "Video"}</p>*/}
                         </div>
                       </Link>
                     ))}

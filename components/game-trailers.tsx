@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Play, ExternalLink } from "lucide-react"
 import { fetchGameTrailers } from "@/lib/api"
-import type { Trailer } from "@/types/game"
+// import type { Trailer } from "@/types/game"
 
 interface GameTrailersProps {
   gameId: number
@@ -15,7 +15,7 @@ interface GameTrailersProps {
 }
 
 export function GameTrailers({ gameId, gameName, gameImage }: GameTrailersProps) {
-  const [trailers, setTrailers] = useState<Trailer[]>([])
+  const [trailers, setTrailers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 

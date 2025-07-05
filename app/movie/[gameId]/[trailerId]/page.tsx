@@ -81,7 +81,7 @@ export default function MoviePage() {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0">
+      <header className="relative z-50 bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button
@@ -93,7 +93,7 @@ export default function MoviePage() {
               Back to {game.name}
             </Button>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+              <Button variant="outline" size="sm" className="gap-2 ">
                 <Share2 className="w-4 h-4" />
                 Share
               </Button>
