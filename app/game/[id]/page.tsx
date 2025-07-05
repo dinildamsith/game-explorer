@@ -280,11 +280,7 @@ export default function GameDetailsPage() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {trailers.map((trailer, index) => (
-                      <Link
-                        key={trailer.id || index}
-                        href={`/movie/${gameId}/${trailer.id || index}?name=${encodeURIComponent(game.name)}&image=${encodeURIComponent(game.background_image || "")}`}
-                        className="group relative block"
-                      >
+                      <div>
                         <div className="relative aspect-video bg-gray-200 rounded-lg overflow-hidden border border-gray-300 shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
                           <img
                             src={
@@ -316,7 +312,7 @@ export default function GameDetailsPage() {
                           </h4>
                           {/*<p className="text-xs text-gray-600">{trailer.data?.max || "Video"}</p>*/}
                         </div>
-                      </Link>
+                      </div>
                     ))}
                   </div>
                 </CardContent>
